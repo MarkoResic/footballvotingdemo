@@ -9,11 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails
 @Document(collection = "users")
 data class User(
     @Id
-    val idUser: Int,
-    val email: String,
-    val password: String,
-    val nickname: String,
-    val role: Role
+    private val idUser: Int,
+    private val email: String,
+    private val password: String,
+    private val nickname: String,
+    private val role: Role
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority(role.name))
