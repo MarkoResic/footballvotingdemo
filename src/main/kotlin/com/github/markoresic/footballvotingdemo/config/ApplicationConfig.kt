@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 @Configuration
 class ApplicationConfig {
 
-    lateinit var repository: UserRepository
+    //Property must be initialized or be abstract
+    val repository: UserRepository
 
     val userDetailsService = object : UserDetailsService {
         override fun loadUserByUsername(username: String): UserDetails {

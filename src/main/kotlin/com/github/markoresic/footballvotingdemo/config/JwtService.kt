@@ -12,7 +12,7 @@ import javax.crypto.SecretKey
 
 class JwtService {
     @Value("\${application.security.jwt.secret-key}")
-    private val secretKey: String? = null
+    private val secretKey: String = ""
     @Value("\${application.security.jwt.expiration}")
     private val jwtExpiration: Long = 0
     @Value("\${application.security.jwt.refresh-token.expiration}")
