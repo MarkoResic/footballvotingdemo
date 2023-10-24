@@ -11,19 +11,18 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 
 @Component
-class JwtAuthenticationFilter : OncePerRequestFilter() {
+class JwtAuthenticationFilter(private val userDetailsService: UserDetailsService) : OncePerRequestFilter() {
 
-    lateinit var jwtService: JwtService
-    lateinit var userDetailsService: UserDetailsService
+    val jwtService: JwtService = JwtService()
 
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
         @NonNull response: HttpServletResponse,
-        @NonNull filterChain: FilterChain
+        @NonNull filterChain: FilterChain,
     ) {
         val authHeader = request.getHeader("Authorization")
         val userEmail: String
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response)
             return
         }
