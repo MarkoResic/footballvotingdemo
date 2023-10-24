@@ -6,18 +6,19 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
 
-
-class JwtService {
+@Service
+class JwtService(
     @Value("\${application.security.jwt.secret-key}")
-    private val secretKey: String = ""
+    private val secretKey: String,
     @Value("\${application.security.jwt.expiration}")
-    private val jwtExpiration: Long = 0
+    private val jwtExpiration: Long,
     @Value("\${application.security.jwt.refresh-token.expiration}")
-    private val refreshExpiration: Long = 0
-
+    private val refreshExpiration: Long
+) {
     fun extractUsername(token: String): String {
         return extractClaim(token, Claims::getSubject)
     }
