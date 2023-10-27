@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 @Document(collection = "votes")
 data class Vote(
     @Id
-    val idVote: Int,
+    val idVote: Int?,
     val playerId: Int,
     val userId: Int,
     val votedDateTime: LocalDateTime

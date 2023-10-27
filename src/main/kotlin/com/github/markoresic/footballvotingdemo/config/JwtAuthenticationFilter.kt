@@ -23,6 +23,10 @@ class JwtAuthenticationFilter(
         @NonNull response: HttpServletResponse,
         @NonNull filterChain: FilterChain,
     ) {
+        if (request.servletPath.contains("/api/auth")) {
+            filterChain.doFilter(request, response)
+            return
+        }
         val authHeader = request.getHeader("Authorization")
         val userEmail: String
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -31,7 +35,7 @@ class JwtAuthenticationFilter(
         }
         val jwt: String = authHeader.substring(7)
         userEmail = jwtService.extractUsername(jwt)
-        if (userEmail != null && SecurityContextHolder.getContext().authentication == null) {
+        if (SecurityContextHolder.getContext().authentication == null) {
             val userDetails = userDetailsService.loadUserByUsername(userEmail)
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 val authToken = UsernamePasswordAuthenticationToken(

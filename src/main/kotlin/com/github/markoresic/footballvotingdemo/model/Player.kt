@@ -7,7 +7,7 @@ import java.sql.Date
 @Document(collection = "players")
 data class Player(
     @Id
-    val idPlayer: Int,
+    val idPlayer: Int?,
     val name: String,
     val dob: Date,
     val imageUrl: String,

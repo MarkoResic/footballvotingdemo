@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails
 @Document(collection = "users")
 data class User(
     @Id
-    private val idUser: Int,
+    private val idUser: Int?,
     private val email: String,
     private val password: String,
     private val nickname: String,
