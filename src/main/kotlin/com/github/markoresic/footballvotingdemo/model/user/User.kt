@@ -10,11 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails
 data class User(
     @Id
     private val idUser: String?,
-    private val email: String,
+    val email: String,
     private val password: String,
-    private val nickname: String,
-    private val role: Role
+    val nickname: String,
+    val role: Role
 ) : UserDetails {
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority(role.name))
     }
