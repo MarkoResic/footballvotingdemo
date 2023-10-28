@@ -15,9 +15,7 @@ class JwtService(
     @Value("\${application.security.jwt.secret-key}")
     private val secretKey: String,
     @Value("\${application.security.jwt.expiration}")
-    private val jwtExpiration: Long,
-    @Value("\${application.security.jwt.refresh-token.expiration}")
-    private val refreshExpiration: Long
+    private val jwtExpiration: Long
 ) {
     fun extractUsername(token: String): String {
         return extractClaim(token, Claims::getSubject)
@@ -37,12 +35,6 @@ class JwtService(
         userDetails: UserDetails
     ): String {
         return buildToken(extraClaims, userDetails, jwtExpiration)
-    }
-
-    fun generateRefreshToken(
-        userDetails: UserDetails
-    ): String {
-        return buildToken(HashMap(), userDetails, refreshExpiration)
     }
 
     private fun buildToken(

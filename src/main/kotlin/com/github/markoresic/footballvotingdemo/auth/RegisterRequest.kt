@@ -6,6 +6,6 @@ data class RegisterRequest(
     val email: String,
     val password: String,
     val nickname: String,
-    val role: Role
+    val role: Role = Role.USER
 ) {
 }
