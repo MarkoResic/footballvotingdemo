@@ -1,8 +1,8 @@
-package com.github.markoresic.footballvotingdemo.model
+package com.github.markoresic.footballvotingdemo.model.player
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.sql.Date
+import java.util.Date
 
 @Document(collection = "players")
 data class Player(
