@@ -1,8 +1,8 @@
 package com.github.markoresic.footballvotingdemo.model.player
 
-import java.util.Date
+import java.util.*
 
-data class PlayerDetailsResponse(
+data class PlayerDetails(
     val name: String,
     val dob: Date,
     val imageUrl: String,

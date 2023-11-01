@@ -1,10 +1,10 @@
 package com.github.markoresic.footballvotingdemo.extension
 
 import com.github.markoresic.footballvotingdemo.model.player.Player
-import com.github.markoresic.footballvotingdemo.model.player.PlayerDetailsResponse
+import com.github.markoresic.footballvotingdemo.model.player.PlayerDetails
 import com.github.markoresic.footballvotingdemo.model.player.PlayerListItemResponse
 
-fun Player.toPlayerDetailsResponse() = PlayerDetailsResponse(
+fun Player.toPlayerDetails() = PlayerDetails(
     name,
     dob,
     imageUrl,
