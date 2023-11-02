@@ -20,6 +20,6 @@ class PlayerController(private val playerService: PlayerService) {
 
     @PostMapping("/management")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createPlayer(@RequestBody playerDetails: PlayerDetails): PlayerDetails =
+    fun createPlayer(@RequestBody playerDetails: PlayerDetails) =
         playerService.createPlayer(playerDetails)
 }

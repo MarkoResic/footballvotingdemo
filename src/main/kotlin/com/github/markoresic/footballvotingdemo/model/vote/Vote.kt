@@ -1,4 +1,4 @@
-package com.github.markoresic.footballvotingdemo.model
+package com.github.markoresic.footballvotingdemo.model.vote
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 data class Vote(
     @Id
     val idVote: String?,
-    val playerId: Int,
-    val userId: Int,
+    val playerId: String,
+    val userId: String,
     val votedDateTime: LocalDateTime
 )

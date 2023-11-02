@@ -14,4 +14,9 @@ class UserService(private val userRepository: UserRepository) {
         val user = userRepository.findByEmail(email).orElseThrow { UsernameNotFoundException("User not found") }
         return user.toUserResponse()
     }
+
+    fun getUserId(email: String): String {
+        val user = userRepository.findByEmail(email).orElseThrow { UsernameNotFoundException("User not found") }
+        return user.idUser!!
+    }
 }
