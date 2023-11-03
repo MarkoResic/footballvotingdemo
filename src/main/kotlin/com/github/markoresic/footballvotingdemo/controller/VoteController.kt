@@ -22,9 +22,8 @@ class VoteController(
 
     @PostMapping("/{playerId}")
     fun createVote(@PathVariable playerId: String): ResponseEntity<Unit> {
-        try {
-            playerService.getPlayerDetails(playerId)
-        } catch (e: NoSuchElementException) {
+
+        if (!playerService.playerExistsById(playerId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
 
@@ -33,12 +32,10 @@ class VoteController(
         val userId = userService.getUserId(email)
 
         val voteCreateRequest = VoteCreateRequest(playerId, userId)
-        val optionalVote = voteService.createVote(voteCreateRequest)
-
-        return if (optionalVote.isEmpty) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
-        } else {
+        return if (voteService.createVote(voteCreateRequest)) {
             ResponseEntity.status(HttpStatus.CREATED).build()
+        } else {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
     }
 }

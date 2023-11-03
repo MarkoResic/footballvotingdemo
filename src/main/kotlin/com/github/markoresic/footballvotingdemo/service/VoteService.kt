@@ -6,19 +6,27 @@ import com.github.markoresic.footballvotingdemo.repository.VoteRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 
 @Service
 class VoteService(private val voteRepository: VoteRepository) {
 
-    fun createVote(voteCreateRequest: VoteCreateRequest): Optional<Vote> {
+    fun getTodaysVotes(): List<Vote> =
+        voteRepository.findByVotedDateTimeIsAfter(LocalDate.now().atStartOfDay())
+
+    fun getTodaysVotesCountByPlayer(id: String): Int =
+        voteRepository.findByPlayerIdAndVotedDateTimeIsAfter(
+            id,
+            LocalDate.now().atStartOfDay()
+        ).count()
+
+    fun createVote(voteCreateRequest: VoteCreateRequest): Boolean {
         val votesToday =
             voteRepository.findByUserIdAndVotedDateTimeIsAfter(
                 voteCreateRequest.userId,
                 LocalDate.now().atStartOfDay()
             )
         if (votesToday.isNotEmpty()) {
-            return Optional.empty()
+            return false
         }
 
         val vote = Vote(
@@ -27,6 +35,7 @@ class VoteService(private val voteRepository: VoteRepository) {
             voteCreateRequest.userId,
             LocalDateTime.now()
         )
-        return Optional.of(voteRepository.insert(vote))
+        voteRepository.insert(vote)
+        return true
     }
 }

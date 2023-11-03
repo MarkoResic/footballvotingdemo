@@ -7,5 +7,4 @@ data class RegisterRequest(
     val password: String,
     val nickname: String,
     val role: Role = Role.USER
-) {
-}
+)

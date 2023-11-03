@@ -8,5 +8,6 @@ data class PlayerDetails(
     val imageUrl: String,
     val teamName: String,
     val position: String,
-    val jerseyNumber: String
+    val jerseyNumber: String,
+    var votes: Int = 0
 )

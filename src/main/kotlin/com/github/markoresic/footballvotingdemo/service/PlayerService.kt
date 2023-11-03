@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service
 @Service
 class PlayerService(private val playerRepository: PlayerRepository) {
 
+    fun playerExistsById(id: String): Boolean = playerRepository.existsById(id)
+
     fun getPlayerDetails(id: String): PlayerDetails {
         val player = playerRepository.findById(id).orElseThrow()
         return player.toPlayerDetails()
@@ -21,7 +23,7 @@ class PlayerService(private val playerRepository: PlayerRepository) {
         return players.map { player -> player.toPlayerListItemResponse() }
     }
 
-    fun createPlayer(playerDetails: PlayerDetails): PlayerDetails {
+    fun createPlayer(playerDetails: PlayerDetails) {
         val player = Player(
             null,
             playerDetails.name,
@@ -31,6 +33,6 @@ class PlayerService(private val playerRepository: PlayerRepository) {
             playerDetails.position,
             playerDetails.jerseyNumber
         )
-        return playerRepository.insert(player).toPlayerDetails()
+        playerRepository.insert(player)
     }
 }
