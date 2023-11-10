@@ -4,6 +4,7 @@ import com.github.markoresic.footballvotingdemo.auth.AuthenticationRequest
 import com.github.markoresic.footballvotingdemo.auth.AuthenticationResponse
 import com.github.markoresic.footballvotingdemo.auth.AuthenticationService
 import com.github.markoresic.footballvotingdemo.auth.RegisterRequest
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -18,7 +19,7 @@ class AuthenticationController(
 ) {
     @PostMapping("/register")
     fun register(
-        @RequestBody request: RegisterRequest
+        @Valid @RequestBody request: RegisterRequest
     ): ResponseEntity<AuthenticationResponse> {
         return ResponseEntity.ok(authenticationService.register(request))
     }

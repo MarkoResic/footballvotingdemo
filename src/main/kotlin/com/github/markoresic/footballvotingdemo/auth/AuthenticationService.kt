@@ -1,6 +1,7 @@
 package com.github.markoresic.footballvotingdemo.auth
 
 import com.github.markoresic.footballvotingdemo.config.JwtService
+import com.github.markoresic.footballvotingdemo.exception.UserNotCreatedException
 import com.github.markoresic.footballvotingdemo.model.user.Role
 import com.github.markoresic.footballvotingdemo.model.user.User
 import com.github.markoresic.footballvotingdemo.repository.UserRepository
@@ -18,15 +19,19 @@ class AuthenticationService(
 ) {
 
     fun register(request: RegisterRequest): AuthenticationResponse {
-        val savedUser = userRepository.save(
-            User(
-                null,
-                request.email,
-                passwordEncoder().encode(request.password),
-                request.nickname,
-                Role.USER
+        val savedUser = try {
+            userRepository.save(
+                User(
+                    null,
+                    request.email,
+                    passwordEncoder().encode(request.password),
+                    request.nickname,
+                    Role.USER
+                )
             )
-        )
+        } catch (e: Exception) {
+            throw UserNotCreatedException(e.message)
+        }
         val jwtToken = jwtService.generateToken(savedUser)
         return AuthenticationResponse(jwtToken)
     }
