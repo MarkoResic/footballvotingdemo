@@ -1,5 +1,7 @@
 package com.github.markoresic.footballvotingdemo.auth
 
 data class AuthenticationResponse(
-    val accessToken: String
+    val userId: String,
+    val accessToken: String,
+    val refreshToken: String
 )
