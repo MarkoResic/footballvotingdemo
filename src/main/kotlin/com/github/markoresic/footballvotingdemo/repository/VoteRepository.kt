@@ -10,5 +10,5 @@ interface VoteRepository : MongoRepository<Vote, String> {
 
     fun findByUserIdAndVotedDateTimeIsAfter(userId: String, localDateTime: LocalDateTime): List<Vote>
 
-    fun findByPlayerIdAndVotedDateTimeIsAfter(playerId: String, localDateTime: LocalDateTime): List<Vote>
+    fun findByPlayerId(playerId: String): List<Vote>
 }

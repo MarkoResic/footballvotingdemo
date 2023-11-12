@@ -18,9 +18,9 @@ class PlayerController(
 
     @GetMapping("/{id}")
     fun getPlayerDetails(@PathVariable id: String): PlayerDetails {
-        val votesCount = voteService.getTodaysVotesCountByPlayer(id)
+        val votesCount = voteService.getVotesCountByPlayer(id)
         val playerDetails = playerService.getPlayerDetails(id)
-        playerService.getPlayerDetails(id).votes = votesCount
+        playerDetails.votes = votesCount
         return playerDetails
     }
 
@@ -28,9 +28,26 @@ class PlayerController(
     fun getPlayersBySearchTerm(@PathVariable searchTerm: String): List<PlayerListItemResponse> =
         playerService.getPlayersBySearchTerm(searchTerm)
 
-    @GetMapping("/top")
+    @GetMapping("/top/today")
+    fun getTopPlayersByVotesForToday(): List<PlayerVotesListItemResponse> {
+        val votes = voteService.getVotesForToday()
+        return votes
+            .groupingBy { it.playerId }
+            .eachCount()
+            .toList()
+            .sortedByDescending { it.second }
+            .take(10)
+            .map { keyValuePair ->
+                PlayerVotesListItemResponse(
+                    playerService.getPlayerDetails(keyValuePair.first).name,
+                    keyValuePair.second
+                )
+            }
+    }
+
+    @GetMapping("/top/all-time")
     fun getTopPlayersByVotes(): List<PlayerVotesListItemResponse> {
-        val votes = voteService.getTodaysVotes()
+        val votes = voteService.getVotes()
         return votes
             .groupingBy { it.playerId }
             .eachCount()

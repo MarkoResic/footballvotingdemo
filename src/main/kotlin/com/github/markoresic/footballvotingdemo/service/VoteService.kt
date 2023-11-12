@@ -10,14 +10,14 @@ import java.time.LocalDateTime
 @Service
 class VoteService(private val voteRepository: VoteRepository) {
 
-    fun getTodaysVotes(): List<Vote> =
+    fun getVotesForToday(): List<Vote> =
         voteRepository.findByVotedDateTimeIsAfter(LocalDate.now().atStartOfDay())
 
-    fun getTodaysVotesCountByPlayer(id: String): Int =
-        voteRepository.findByPlayerIdAndVotedDateTimeIsAfter(
-            id,
-            LocalDate.now().atStartOfDay()
-        ).count()
+    fun getVotes(): List<Vote> =
+        voteRepository.findAll()
+
+    fun getVotesCountByPlayer(id: String): Int =
+        voteRepository.findByPlayerId(id).count()
 
     fun createVote(voteCreateRequest: VoteCreateRequest): Boolean {
         val votesToday =

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.lang.RuntimeException
+import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("/api/votes")
@@ -25,7 +26,7 @@ class VoteController(
     fun createVote(@PathVariable playerId: String): ResponseEntity<Unit> {
 
         if (!playerService.playerExistsById(playerId)) {
-            throw RuntimeException("Player not found!")
+            throw NoSuchElementException("Player not found!")
         }
 
         val authentication = SecurityContextHolder.getContext().authentication
