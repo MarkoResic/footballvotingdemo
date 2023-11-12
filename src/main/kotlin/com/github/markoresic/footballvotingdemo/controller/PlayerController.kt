@@ -5,6 +5,7 @@ import com.github.markoresic.footballvotingdemo.model.player.PlayerListItemRespo
 import com.github.markoresic.footballvotingdemo.model.player.PlayerVotesListItemResponse
 import com.github.markoresic.footballvotingdemo.service.PlayerService
 import com.github.markoresic.footballvotingdemo.service.VoteService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -46,6 +47,10 @@ class PlayerController(
 
     @PostMapping("/management")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createPlayer(@RequestBody playerDetails: PlayerDetails) =
+    fun createPlayer(@Valid @RequestBody playerDetails: PlayerDetails) {
+        if (playerService.playerExistsByTeamNameAndJerseyNumber(playerDetails.teamName, playerDetails.jerseyNumber)) {
+            throw RuntimeException("Player already exists!")
+        }
         playerService.createPlayer(playerDetails)
+    }
 }

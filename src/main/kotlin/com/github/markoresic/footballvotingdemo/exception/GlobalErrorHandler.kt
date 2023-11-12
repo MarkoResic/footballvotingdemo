@@ -18,9 +18,9 @@ class GlobalErrorHandler {
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
-    @ExceptionHandler(UserNotCreatedException::class)
-    fun handleUserNotCreated(e: UserNotCreatedException): ResponseEntity<String> {
-        return ResponseEntity("User with e-mail already exists!", HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RuntimeException::class)
+    fun handleRuntimeException(e: RuntimeException): ResponseEntity<String> {
+        return ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)

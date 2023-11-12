@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.lang.RuntimeException
 
 @RestController
 @RequestMapping("/api/votes")
@@ -24,7 +25,7 @@ class VoteController(
     fun createVote(@PathVariable playerId: String): ResponseEntity<Unit> {
 
         if (!playerService.playerExistsById(playerId)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+            throw RuntimeException("Player not found!")
         }
 
         val authentication = SecurityContextHolder.getContext().authentication
@@ -35,7 +36,7 @@ class VoteController(
         return if (voteService.createVote(voteCreateRequest)) {
             ResponseEntity.status(HttpStatus.CREATED).build()
         } else {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+            throw RuntimeException("You already voted today!")
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.github.markoresic.footballvotingdemo.auth
 
 import com.github.markoresic.footballvotingdemo.config.JwtService
-import com.github.markoresic.footballvotingdemo.exception.UserNotCreatedException
 import com.github.markoresic.footballvotingdemo.model.user.Role
 import com.github.markoresic.footballvotingdemo.model.user.User
 import com.github.markoresic.footballvotingdemo.repository.UserRepository
@@ -10,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 
 @Service
 class AuthenticationService(
@@ -30,7 +30,7 @@ class AuthenticationService(
                 )
             )
         } catch (e: Exception) {
-            throw UserNotCreatedException(e.message)
+            throw RuntimeException("User with e-mail already exists!")
         }
         val jwtToken = jwtService.generateToken(savedUser)
         return AuthenticationResponse(jwtToken)
