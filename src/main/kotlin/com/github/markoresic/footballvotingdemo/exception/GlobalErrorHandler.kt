@@ -12,21 +12,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class GlobalErrorHandler {
 
     @ExceptionHandler(ExpiredJwtException::class)
-    fun handleExpiredJwt(e: ExpiredJwtException): ResponseEntity<String> =
-        ResponseEntity(e.message, HttpStatus.UNAUTHORIZED)
+    fun handleExpiredJwt(e: ExpiredJwtException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.message)
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
 
     @ExceptionHandler(NoSuchElementException::class)
-    fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
-        ResponseEntity(e.message, HttpStatus.NOT_FOUND)
+    fun handleNotFound(e: NoSuchElementException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(HttpStatus.NOT_FOUND.value(), e.message)
+        return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
 
     @ExceptionHandler(RuntimeException::class)
-    fun handleRuntimeException(e: RuntimeException): ResponseEntity<String> {
-        return ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+    fun handleRuntimeException(e: RuntimeException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.message)
+        return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(BadCredentialsException::class)
-    fun handleRuntimeException(e: BadCredentialsException): ResponseEntity<String> {
-        return ResponseEntity(e.message, HttpStatus.UNAUTHORIZED)
+    fun handleRuntimeException(e: BadCredentialsException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.message)
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
@@ -36,5 +42,11 @@ class GlobalErrorHandler {
             errorMap[error.field] = error.defaultMessage
         }
         return ResponseEntity(errorMap, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(DuplicateEmailException::class)
+    fun handleDuplicateEmailException(e: DuplicateEmailException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(HttpStatus.CONFLICT.value(), e.message)
+        return ResponseEntity(errorResponse, HttpStatus.CONFLICT)
     }
 }

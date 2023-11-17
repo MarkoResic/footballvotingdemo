@@ -16,16 +16,16 @@ class PlayerController(
     private val voteService: VoteService
 ) {
 
-    @GetMapping("/{id}")
-    fun getPlayerDetails(@PathVariable id: String): PlayerDetails {
+    @GetMapping
+    fun getPlayerDetails(@RequestParam id: String): PlayerDetails {
         val votesCount = voteService.getVotesCountByPlayer(id)
         val playerDetails = playerService.getPlayerDetails(id)
         playerDetails.votes = votesCount
         return playerDetails
     }
 
-    @GetMapping("/search/{searchTerm}")
-    fun getPlayersBySearchTerm(@PathVariable searchTerm: String): List<PlayerListItemResponse> =
+    @GetMapping("/search")
+    fun getPlayersBySearchTerm(@RequestParam searchTerm: String): List<PlayerListItemResponse> =
         playerService.getPlayersBySearchTerm(searchTerm)
 
     @GetMapping("/top/today")

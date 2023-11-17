@@ -1,6 +1,7 @@
 package com.github.markoresic.footballvotingdemo.auth
 
 import com.github.markoresic.footballvotingdemo.config.JwtService
+import com.github.markoresic.footballvotingdemo.exception.DuplicateEmailException
 import com.github.markoresic.footballvotingdemo.model.user.Role
 import com.github.markoresic.footballvotingdemo.model.user.User
 import com.github.markoresic.footballvotingdemo.service.UserService
@@ -23,6 +24,9 @@ class AuthenticationService(
 ) {
 
     fun register(request: RegisterRequest): AuthenticationResponse {
+        if (userService.userExistsByEmail(request.email)) {
+            throw DuplicateEmailException("User with e-mail already exists!")
+        }
         val user = User(
             null,
             request.email,
@@ -30,11 +34,7 @@ class AuthenticationService(
             request.nickname,
             Role.USER
         )
-        val savedUser = try {
-            userService.createUser(user)
-        } catch (e: Exception) {
-            throw RuntimeException("User with e-mail already exists!")
-        }
+        val savedUser = userService.createUser(user)
 
         val accessToken = jwtService.generateAccessToken(savedUser)
         val refreshTokenDocument = RefreshToken(

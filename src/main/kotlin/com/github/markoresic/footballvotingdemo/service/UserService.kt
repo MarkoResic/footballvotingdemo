@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(private val userRepository: UserRepository) {
 
+    fun userExistsByEmail(email: String): Boolean = userRepository.existsByEmail(email)
+
     fun getUser(email: String): User =
         userRepository.findByEmail(email).orElseThrow { UsernameNotFoundException("User not found") }
 
