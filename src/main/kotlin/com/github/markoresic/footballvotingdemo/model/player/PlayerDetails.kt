@@ -16,5 +16,5 @@ data class PlayerDetails(
     val position: String,
     @field:NotBlank(message = "Jersey number must not be blank")
     val jerseyNumber: String,
-    var votes: Int = 0
+    var numberOfVotes: Int = 0
 )

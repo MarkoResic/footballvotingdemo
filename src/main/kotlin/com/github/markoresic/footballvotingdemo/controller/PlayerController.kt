@@ -56,7 +56,7 @@ class PlayerController(
             .take(10)
             .map { keyValuePair ->
                 PlayerVotesListItemResponse(
-                    playerService.getPlayerDetails(keyValuePair.first).name,
+                    playerService.getPlayerDetails(keyValuePair.first).fullName,
                     keyValuePair.second
                 )
             }

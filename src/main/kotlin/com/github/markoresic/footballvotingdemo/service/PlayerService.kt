@@ -29,7 +29,7 @@ class PlayerService(private val playerRepository: PlayerRepository) {
     fun createPlayer(playerDetails: PlayerDetails) {
         val player = Player(
             null,
-            playerDetails.name,
+            playerDetails.fullName,
             playerDetails.dob,
             playerDetails.imageUrl,
             playerDetails.teamName,
