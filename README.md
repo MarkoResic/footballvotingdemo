@@ -13,7 +13,7 @@ Body
 ```
 {
     "email": "email@mail.com",
-    "password": "password",
+    "password": "password*",
     "nickname": "nick"
 }
 ```
@@ -47,7 +47,7 @@ Body
 ```
 {
     "email": "email@mail.com",
-    "password": "password",
+    "password": "password*",
     "nickname": "nick"
 }
 ```
@@ -151,7 +151,7 @@ AUTHORIZATION: Bearer Token
 Example Request
 
 ```
-GET http://localhost:8080/api/players/6550cc87bf66a037871a1881
+GET http://localhost:8080/api/players?id=6550cc87bf66a037871a1881
 ```
 
 Example Response
@@ -164,13 +164,13 @@ Body
 
 ```
 {
-    "name": "Patrick Mahomes",
+    "fullName": "Patrick Mahomes",
     "dob": "1995-09-17T00:00:00.000+00:00",
     "imageUrl": "",
     "teamName": "Kansas City Chiefs",
     "position": "QB",
     "jerseyNumber": "15",
-    "votes": 1
+    "numberOfVotes": 1
 }
 ```
 
@@ -196,7 +196,7 @@ Body
 [
     {
         "idPlayer": "6550cc87bf66a037871a1881",
-        "name": "Patrick Mahomes",
+        "fullName": "Patrick Mahomes",
         "imageUrl": "",
         "teamName": "Kansas City Chiefs"
     }
@@ -217,7 +217,7 @@ Body
 
 ```
 {
-    "name": "Patrick Mahomes",
+    "fullName": "Patrick Mahomes",
     "dob": "1995-09-17",
     "imageUrl": "",
     "teamName": "Kansas City Chiefs",
@@ -239,7 +239,7 @@ AUTHORIZATION: Bearer Token
 Example Request
 
 ```
-POST http://localhost:8080/api/votes/6550cc87bf66a037871a1881
+POST http://localhost:8080/api/votes?playerId=6550cc87bf66a037871a1881
 ```
 
 Example Response
@@ -269,8 +269,8 @@ Body
 ```
 [
     {
-        "name": "Patrick Mahomes",
-        "votes": 2
+        "fullName": "Patrick Mahomes",
+        "numberOfVotes": 2
     }
 ]
 ```
@@ -296,8 +296,8 @@ Body
 ```
 [
     {
-        "name": "Patrick Mahomes",
-        "votes": 1
+        "fullName": "Patrick Mahomes",
+        "numberOfVotes": 1
     }
 ]
 ```
