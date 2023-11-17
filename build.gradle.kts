@@ -28,6 +28,8 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.12.3")
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 }

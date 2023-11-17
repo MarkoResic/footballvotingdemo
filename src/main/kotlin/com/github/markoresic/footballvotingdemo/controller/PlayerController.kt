@@ -5,6 +5,7 @@ import com.github.markoresic.footballvotingdemo.model.player.PlayerListItemRespo
 import com.github.markoresic.footballvotingdemo.model.player.PlayerVotesListItemResponse
 import com.github.markoresic.footballvotingdemo.service.PlayerService
 import com.github.markoresic.footballvotingdemo.service.VoteService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -15,21 +16,38 @@ class PlayerController(
     private val voteService: VoteService
 ) {
 
-    @GetMapping("/{id}")
-    fun getPlayerDetails(@PathVariable id: String): PlayerDetails {
-        val votesCount = voteService.getTodaysVotesCountByPlayer(id)
+    @GetMapping
+    fun getPlayerDetails(@RequestParam id: String): PlayerDetails {
+        val votesCount = voteService.getVotesCountByPlayer(id)
         val playerDetails = playerService.getPlayerDetails(id)
-        playerService.getPlayerDetails(id).numberOfVotes = votesCount
+        playerDetails.numberOfVotes = votesCount
         return playerDetails
     }
 
-    @GetMapping("/search/{searchTerm}")
-    fun getPlayersBySearchTerm(@PathVariable searchTerm: String): List<PlayerListItemResponse> =
+    @GetMapping("/search")
+    fun getPlayersBySearchTerm(@RequestParam searchTerm: String): List<PlayerListItemResponse> =
         playerService.getPlayersBySearchTerm(searchTerm)
 
-    @GetMapping("/top")
+    @GetMapping("/top/today")
+    fun getTopPlayersByVotesForToday(): List<PlayerVotesListItemResponse> {
+        val votes = voteService.getVotesForToday()
+        return votes
+            .groupingBy { it.playerId }
+            .eachCount()
+            .toList()
+            .sortedByDescending { it.second }
+            .take(10)
+            .map { keyValuePair ->
+                PlayerVotesListItemResponse(
+                    playerService.getPlayerDetails(keyValuePair.first).fullName,
+                    keyValuePair.second
+                )
+            }
+    }
+
+    @GetMapping("/top/all-time")
     fun getTopPlayersByVotes(): List<PlayerVotesListItemResponse> {
-        val votes = voteService.getTodaysVotes()
+        val votes = voteService.getVotes()
         return votes
             .groupingBy { it.playerId }
             .eachCount()
@@ -46,6 +64,10 @@ class PlayerController(
 
     @PostMapping("/management")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createPlayer(@RequestBody playerDetails: PlayerDetails) =
+    fun createPlayer(@Valid @RequestBody playerDetails: PlayerDetails) {
+        if (playerService.playerExistsByTeamNameAndJerseyNumber(playerDetails.teamName, playerDetails.jerseyNumber)) {
+            throw RuntimeException("Player already exists!")
+        }
         playerService.createPlayer(playerDetails)
+    }
 }

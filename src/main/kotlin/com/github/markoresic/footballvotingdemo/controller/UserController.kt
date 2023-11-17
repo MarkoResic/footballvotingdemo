@@ -15,6 +15,6 @@ class UserController(private val userService: UserService) {
     fun getUser(): UserResponse {
         val authentication = SecurityContextHolder.getContext().authentication
         val email: String = authentication.name
-        return userService.getUser(email)
+        return userService.getUserResponse(email)
     }
 }

@@ -13,8 +13,11 @@ class PlayerService(private val playerRepository: PlayerRepository) {
 
     fun playerExistsById(id: String): Boolean = playerRepository.existsById(id)
 
-    fun getPlayerDetails(playerId: String): PlayerDetails {
-        val player = playerRepository.findById(playerId).orElseThrow()
+    fun playerExistsByTeamNameAndJerseyNumber(teamName: String, jerseyNumber: String): Boolean =
+        playerRepository.existsByTeamNameAndJerseyNumber(teamName, jerseyNumber)
+
+    fun getPlayerDetails(id: String): PlayerDetails {
+        val player = playerRepository.findById(id).orElseThrow()
         return player.toPlayerDetails()
     }
 
