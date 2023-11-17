@@ -6,7 +6,7 @@ import java.util.*
 
 data class PlayerDetails(
     @field:NotBlank(message = "Name must not be blank")
-    val name: String,
+    val fullName: String,
     @field:Past(message = "Date of birth must be in the past")
     val dob: Date,
     val imageUrl: String,
@@ -16,5 +16,5 @@ data class PlayerDetails(
     val position: String,
     @field:NotBlank(message = "Jersey number must not be blank")
     val jerseyNumber: String,
-    var votes: Int = 0
+    var numberOfVotes: Int = 0
 )

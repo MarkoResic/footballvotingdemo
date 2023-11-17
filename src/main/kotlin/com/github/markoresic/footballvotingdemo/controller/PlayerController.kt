@@ -20,7 +20,7 @@ class PlayerController(
     fun getPlayerDetails(@RequestParam id: String): PlayerDetails {
         val votesCount = voteService.getVotesCountByPlayer(id)
         val playerDetails = playerService.getPlayerDetails(id)
-        playerDetails.votes = votesCount
+        playerDetails.numberOfVotes = votesCount
         return playerDetails
     }
 
@@ -39,7 +39,7 @@ class PlayerController(
             .take(10)
             .map { keyValuePair ->
                 PlayerVotesListItemResponse(
-                    playerService.getPlayerDetails(keyValuePair.first).name,
+                    playerService.getPlayerDetails(keyValuePair.first).fullName,
                     keyValuePair.second
                 )
             }
@@ -56,7 +56,7 @@ class PlayerController(
             .take(10)
             .map { keyValuePair ->
                 PlayerVotesListItemResponse(
-                    playerService.getPlayerDetails(keyValuePair.first).name,
+                    playerService.getPlayerDetails(keyValuePair.first).fullName,
                     keyValuePair.second
                 )
             }
