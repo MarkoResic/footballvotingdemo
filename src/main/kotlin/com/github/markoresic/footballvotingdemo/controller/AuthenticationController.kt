@@ -22,8 +22,7 @@ class AuthenticationController(
     fun register(
         @Valid @RequestBody request: RegisterRequest
     ): ResponseEntity<AuthenticationResponse> {
-        val response = ResponseEntity.ok(authenticationService.register(request))
-        return response
+        return ResponseEntity.ok(authenticationService.register(request))
     }
 
     @PostMapping("/authenticate")
