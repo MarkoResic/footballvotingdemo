@@ -1,6 +1,7 @@
 package com.github.markoresic.footballvotingdemo.config
 
 import jakarta.servlet.FilterChain
+import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.lang.NonNull
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
 
-
 @Component
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
@@ -20,6 +20,7 @@ class JwtAuthenticationFilter(
     private val handlerExceptionResolver: HandlerExceptionResolver
 ) : OncePerRequestFilter() {
 
+    @Throws(ServletException::class)
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
         @NonNull response: HttpServletResponse,

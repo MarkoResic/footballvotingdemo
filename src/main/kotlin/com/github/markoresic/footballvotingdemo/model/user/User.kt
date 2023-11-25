@@ -1,6 +1,7 @@
 package com.github.markoresic.footballvotingdemo.model.user
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails
 data class User(
     @Id
     val idUser: String?,
+    @Indexed(unique = true)
     val email: String,
     private val password: String,
     val nickname: String,

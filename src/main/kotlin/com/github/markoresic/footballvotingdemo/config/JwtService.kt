@@ -15,7 +15,10 @@ class JwtService(
     @Value("\${application.security.jwt.secret-key}")
     private val secretKey: String,
     @Value("\${application.security.jwt.expiration}")
-    private val jwtExpiration: Long
+    private val jwtExpiration: Long,
+    @Value("\${application.security.jwt.refresh-token.expiration}")
+    private val refreshExpiration: Long
+
 ) {
     fun extractUsername(token: String): String {
         return extractClaim(token, Claims::getSubject)
@@ -26,18 +29,22 @@ class JwtService(
         return claimsResolver(claims)
     }
 
-    fun generateToken(userDetails: UserDetails): String {
-        return generateToken(HashMap(), userDetails)
+    fun generateAccessToken(userDetails: UserDetails): String {
+        return generateAccessToken(HashMap(), userDetails)
     }
 
-    fun generateToken(
+    fun generateAccessToken(
         extraClaims: Map<String, Any?>,
         userDetails: UserDetails
     ): String {
-        return buildToken(extraClaims, userDetails, jwtExpiration)
+        return buildAccessToken(extraClaims, userDetails, jwtExpiration)
     }
 
-    private fun buildToken(
+    fun generateRefreshToken(userDetails: UserDetails, documentRefreshTokenId: String): String {
+        return buildRefreshToken(documentRefreshTokenId, userDetails, refreshExpiration)
+    }
+
+    private fun buildAccessToken(
         extraClaims: Map<String, Any?>,
         userDetails: UserDetails,
         expiration: Long
@@ -48,7 +55,22 @@ class JwtService(
             .subject(userDetails.username)
             .issuedAt(Date(System.currentTimeMillis()))
             .expiration(Date(System.currentTimeMillis() + expiration))
-            .signWith(getSecretKey(), Jwts.SIG.HS256)
+            .signWith(getSignInKey(), Jwts.SIG.HS256)
+            .compact()
+    }
+
+    private fun buildRefreshToken(
+        documentRefreshTokenId: String,
+        userDetails: UserDetails,
+        expiration: Long
+    ): String {
+        return Jwts
+            .builder()
+            .claim("tokenId", documentRefreshTokenId)
+            .subject(userDetails.username)
+            .issuedAt(Date(System.currentTimeMillis()))
+            .expiration(Date(System.currentTimeMillis() + expiration))
+            .signWith(getSignInKey(), Jwts.SIG.HS256)
             .compact()
     }
 
@@ -57,7 +79,7 @@ class JwtService(
         return username == userDetails.username && !isTokenExpired(token)
     }
 
-    private fun isTokenExpired(token: String): Boolean {
+    fun isTokenExpired(token: String): Boolean {
         return extractExpiration(token).before(Date())
     }
 
@@ -68,13 +90,18 @@ class JwtService(
     private fun extractAllClaims(token: String): Claims {
         return Jwts
             .parser()
-            .verifyWith(getSecretKey())
+            .verifyWith(getSignInKey())
             .build()
             .parseSignedClaims(token)
             .payload
     }
 
-    private fun getSecretKey(): SecretKey {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
+    private fun getSignInKey(): SecretKey {
+        val keyBytes = Decoders.BASE64.decode(secretKey)
+        return Keys.hmacShaKeyFor(keyBytes)
+    }
+
+    fun getTokenIdFromRefreshToken(token: String): String? {
+        return extractClaim(token) { obj: Claims -> obj["tokenId"] }?.toString()
     }
 }
