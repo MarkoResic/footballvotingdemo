@@ -37,7 +37,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: footballvotingdemo
+          context: .
           push: true
           tags: registry.digitalocean.com/footballvotingdemo/app:latest
         
