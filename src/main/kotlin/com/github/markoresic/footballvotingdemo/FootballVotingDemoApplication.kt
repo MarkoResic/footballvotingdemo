@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class FootballvotingdemoApplication
+class FootballVotingDemoApplication
 
 fun main(args: Array<String>) {
-	runApplication<FootballvotingdemoApplication>(*args)
+	runApplication<FootballVotingDemoApplication>(*args)
 }
