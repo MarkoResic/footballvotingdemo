@@ -67,4 +67,4 @@ jobs:
             # Stop all containers
             docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
             # Run a new container from a new image
-            docker run -e "MONGODB_URI=${{ secrets.MONGODB_URI }}" -e "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" -e "JWT_SECRET_KEY=${{ secrets.KEY_STORE_PASSWORD }}" -d -p 8080:8080 registry.digitalocean.com/footballvotingdemo/app:latest
+            docker run -e "MONGODB_URI=${{ secrets.MONGODB_URI }}" -e "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" -e "KEY_STORE_PASSWORD=${{ secrets.KEY_STORE_PASSWORD }}" -d -p 8443:8443 registry.digitalocean.com/footballvotingdemo/app:latest
